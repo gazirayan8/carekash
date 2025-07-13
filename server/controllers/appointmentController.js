@@ -42,7 +42,7 @@ exports.bookAppointment = async (req, res) => {
     const appointment = new Appointment({
       patient: req.user.userId,
       doctor: doctorId,
-      clinic: doctor.clinic, // auto-linked
+      clinic: doctor.clinic || null, // auto-linked
       date,
       time,
     });

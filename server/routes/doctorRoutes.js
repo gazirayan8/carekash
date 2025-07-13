@@ -8,6 +8,10 @@ const {
 } = require("../controllers/appointmentController");
 
 const { addTimeSlots } = require("../controllers/timeSlotController");
+const { updateDoctorProfile } = require("../controllers/doctorController");
+
+// ✅ Update doctor profile
+router.put("/update-profile", verifyToken, updateDoctorProfile);
 
 // ✅ Get all appointments for doctor
 router.get("/appointments", verifyToken, getDoctorAppointments);

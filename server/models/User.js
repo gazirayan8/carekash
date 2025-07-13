@@ -29,41 +29,32 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     documents: {
-      type: [String], // array of file URLs
+      type: [String], // e.g. certificates etc.
       default: [],
     },
-    clinics: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Clinic",
-      },
-    ],
+    associatedClinic: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ClinicProfile", // Clinic details are now in ClinicProfile
+    },
+    fees: {
+      type: Number,
+      default: 0,
+    },
+
+    // Availability of doctor (optional)
     availability: {
       type: [
         {
           day: String,
-          slots: [String], // e.g. ["10:00AM", "11:30AM"]
+          slots: [String], // ["10:00 AM", "11:00 AM"]
         },
       ],
       default: [],
     },
+
     verified: {
       type: Boolean,
       default: false,
-    },
-
-    // Fields specific to clinic
-    clinicName: {
-      type: String,
-      default: "",
-    },
-    address: {
-      type: String,
-      default: "",
-    },
-    contactNumber: {
-      type: String,
-      default: "",
     },
   },
   { timestamps: true }

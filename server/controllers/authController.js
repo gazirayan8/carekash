@@ -7,7 +7,6 @@ require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// REGISTER USER
 const registerUser = async (req, res) => {
   try {
     const {
@@ -19,13 +18,18 @@ const registerUser = async (req, res) => {
       clinicName,
       address,
       contactNumber,
-      clinic, // ✅ Accept optional clinic ID if doctor wants to associate with a clinic
+      clinic  // <-- ✅ Add this field for doctor-clinic binding
     } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // If doctor, clinic must be provided
+    if (role === "doctor" && !clinic) {
+      return res.status(400).json({ message: "Doctor must be associated with a clinic" });
     }
 
     // Hash password
@@ -38,7 +42,7 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       role,
       specialization: role === "doctor" ? specialization : undefined,
-      clinic: role === "doctor" ? clinic || undefined : undefined, // ✅ this is key
+      clinic: role === "doctor" ? clinic : undefined,   // ✅ Save clinic for doctor
       clinicName: role === "clinic" ? clinicName : undefined,
       address: role === "clinic" ? address : undefined,
       contactNumber: role === "clinic" ? contactNumber : undefined,
@@ -52,6 +56,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // LOGIN USER
 const loginUser = async (req, res) => {

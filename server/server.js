@@ -14,14 +14,18 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); 
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const clinicRoutes = require("./routes/clinicRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const searchRoutes = require("./routes/searchRoutes");
 
+app.use("/api/search", searchRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/patient", patientRoutes);
